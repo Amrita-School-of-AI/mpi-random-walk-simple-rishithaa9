@@ -98,5 +98,5 @@ void controller_process()
     }
     
     // After receiving messages from all walkers, print a final summary message
-    std::cout << "Controller: All " << num_walkers << " walkers have completed their walks." << std::endl;
+    std::cout << "All " << num_walkers << " walkers have finished" << std::endl;
 }
