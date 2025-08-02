@@ -18,12 +18,13 @@ echo "Running command: mpirun -np $NP $EXEC $ARGS"
 OUTPUT=$(mpirun --oversubscribe -np $NP $EXEC $ARGS)
 
 # --- Test Validation ---
-# We expect each of the $NP walkers to print a "finished" message.
+# We expect each of the walkers to print a "finished" message.
+# With $NP processes, we have 1 controller (rank 0) and ($NP-1) walkers.
 # Count how many times the word "finished" appears in the output.
 COUNT=$(echo "$OUTPUT" | grep -c "finished")
 
-# The expected number of finished messages is equal to the number of processes.
-EXPECTED_COUNT=$NP
+# The expected number of finished messages is equal to the number of walkers.
+EXPECTED_COUNT=$((NP - 1))
 
 if [ "$COUNT" -eq "$EXPECTED_COUNT" ]; then
     echo "✅ Test Passed: Found $COUNT 'finished' messages, as expected."
