@@ -53,7 +53,7 @@ void walker_process()
 {
     // Seed the random number generator.
     // Using rank ensures each walker gets a different sequence of random numbers.
-    srand(time(NULL) + world_rank);
+    srand(time(NULL) * world_rank);
 
     // Initialize the walker's position to 0
     int position = 0;
@@ -69,15 +69,16 @@ void walker_process()
         // Check if the walker has moved outside the domain [-domain_size, +domain_size]
         if (position < -domain_size || position > domain_size)
         {
+            steps++; // Count this step before breaking
             break; // Walk is finished - out of bounds
         }
     }
     
     // Print a message including the keyword "finished"
-    std::cout << "Rank " << world_rank << ": Walker finished in " << (steps + 1) << " steps." << std::endl;
+    std::cout << "Rank " << world_rank << ": Walker finished in " << steps << " steps." << std::endl;
     
     // Send an integer message to the controller (rank 0) to signal completion
-    int completion_signal = steps + 1; // Send the number of steps taken
+    int completion_signal = steps; // Send the number of steps taken
     MPI_Send(&completion_signal, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
 }
 
@@ -97,6 +98,5 @@ void controller_process()
     }
     
     // After receiving messages from all walkers, print a final summary message
-    // Output format must match autograder expectations exactly
-    std::cout << "All " << num_walkers << " walkers have finished" << std::endl;
+    std::cout << "Controller: All " << num_walkers << " walkers have finished." << std::endl;
 }
