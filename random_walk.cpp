@@ -81,7 +81,6 @@ void walker_process()
     MPI_Send(&completion_signal, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
 }
 
-
 void controller_process()
 {
     // Determine the number of walkers (world_size - 1)
