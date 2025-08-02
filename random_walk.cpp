@@ -67,7 +67,7 @@ void walker_process()
         position += direction;
         
         // Check if the walker has moved outside the domain [-domain_size, +domain_size]
-        if (position <= -domain_size || position >= domain_size)
+        if (position < -domain_size || position > domain_size)
         {
             break; // Walk is finished - out of bounds
         }
@@ -98,5 +98,5 @@ void controller_process()
     }
     
     // After receiving messages from all walkers, print a final summary message
-    std::cout << "All " << num_walkers << " walkers have finished" << std::endl;
+    std::cout << "All " << num_walkers << " walkers have completed" << std::endl;
 }
